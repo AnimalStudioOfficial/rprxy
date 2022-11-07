@@ -9,11 +9,28 @@ router.get('/api/searchmusic/:music', function (req, res, next) {
   });
 });
 
-router.get('/api/asset/:id', function (req, res, next) {
-  https.get('https://assetdelivery.roblox.com/v1/asset/?id=' + encodeURI(req.params.id), function (search) {
-    search.pipe(res);
-  });
-});
+//router.get('/api/asset/:id', function (req, res, next) {
+//  https.get('https://assetdelivery.roblox.com/v1/asset/?id=' + encodeURI(req.params.id), function (search) {
+ //   search.pipe(res);
+//  });
+//});
+router.get('/assets/:id', async (req, res) => {
+    let id = req.params?.id
+    if(!id) {
+        return res.status(403).json({ error: "Did not provide asset id", })
+    }
+
+    try {
+        id = encodeURIComponent(id)
+        const response = await axios.get(`https://assetdelivery.roblox.com/v1/asset?id=${id}`)
+        return res
+            .status(response.status)
+            .header(response.headers)
+            .send(response.data)
+    } catch (ex) {
+        return res.status(500).json({ error: 'Error occured while making asset request', message: ex.message })
+    }
+})
 
 router.get('/api/usernames/:userId*?', function (req, res, next) {
   var userId = req.params.userId || req.query.userId;
