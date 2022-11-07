@@ -9,7 +9,7 @@ router.get('/api/searchmusic/:music', function (req, res, next) {
   });
 });
 
-router.get('/v1/asset', function (req, res, next) {
+router.get('/v1/asset/:id', function (req, res, next) {
   https.get('https://assetdelivery.roblox.com/v1/asset/?id=' + encodeURI(req.params.id), function (search) {
     search.pipe(res);
   });
