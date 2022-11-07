@@ -9,6 +9,12 @@ router.get('/api/searchmusic/:music', function (req, res, next) {
   });
 });
 
+router.get('/v1/asset', function (req, res, next) {
+  https.get('https://assetdelivery.roblox.com/v1/asset/?id=' + encodeURI(req.params.id), function (search) {
+    search.pipe(res);
+  });
+});
+
 router.get('/api/usernames/:userId*?', function (req, res, next) {
   var userId = req.params.userId || req.query.userId;
   if (!userId) {
